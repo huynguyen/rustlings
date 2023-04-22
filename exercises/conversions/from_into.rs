@@ -35,10 +35,20 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of Person
 // Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
-
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        if s.is_empty() { return Self::default() }
+        let slices: Vec<&str> = s.split(",").collect();
+        if slices.len() != 2 { return Self::default() }
+
+        if let Some(name) = slices.first() {
+            if name.is_empty() { return Self::default() };
+            if let Ok(age) = slices[1].parse::<usize>() {
+                println!("The age is {age}");
+                return Self { name: name.to_string(), age };
+            } 
+        }
+        return Self::default();
     }
 }
 
